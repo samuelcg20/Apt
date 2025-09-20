@@ -1,0 +1,136 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  STUDENT
+  COMPANY
+}
+
+enum TaskDomain {
+  MARKETING
+  CODING
+  UIUX
+  FINANCE
+}
+
+enum TaskStatus {
+  OPEN
+  CLOSED
+}
+
+enum ApplicationStatus {
+  APPLIED
+  ACCEPTED
+  REJECTED
+}
+
+model User {
+  id           String   @id @default(cuid())
+  role         UserRole
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  studentProfile StudentProfile?
+  tasks          Task[]
+  reviewsGiven   Review[]       @relation("Reviewer")
+  reviewsReceived Review[]      @relation("Reviewee")
+
+  @@map("users")
+}
+
+model StudentProfile {
+  id          String   @id @default(cuid())
+  name        String
+  university  String
+  yearOfStudy Int
+  skills      String[]
+  bio         String?
+  userId      String   @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  user        User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  projects    PortfolioProject[]
+  applications Application[]
+
+  @@map("student_profiles")
+}
+
+model PortfolioProject {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  link        String?
+  studentId   String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  student StudentProfile @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@map("portfolio_projects")
+}
+
+model Task {
+  id           String      @id @default(cuid())
+  title        String
+  description  String
+  domain       TaskDomain
+  duration     String
+  deliverables String
+  status       TaskStatus  @default(OPEN)
+  companyId    String
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  // Relations
+  company      User          @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  applications Application[]
+
+  @@map("tasks")
+}
+
+model Application {
+  id       String            @id @default(cuid())
+  taskId   String
+  studentId String
+  status   ApplicationStatus @default(APPLIED)
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+
+  // Relations
+  task    Task            @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  student StudentProfile  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@unique([taskId, studentId])
+  @@map("applications")
+}
+
+model Review {
+  id          String   @id @default(cuid())
+  reviewerId  String
+  revieweeId  String
+  rating      Int      // 1-5
+  comment     String?
+  createdAt   DateTime @default(now())
+
+  // Relations
+  reviewer User @relation("Reviewer", fields: [reviewerId], references: [id], onDelete: Cascade)
+  reviewee User @relation("Reviewee", fields: [revieweeId], references: [id], onDelete: Cascade)
+
+  @@unique([reviewerId, revieweeId])
+  @@map("reviews")
+}
