@@ -17,7 +17,12 @@ export async function POST(request: NextRequest) {
     }
 
     // For demo purposes, always return mock user
-    const mockUser = getMockUser(decoded.userId || 'user_1');
+    // decoded may be a string or JwtPayload; userId is only on JwtPayload
+    const userId =
+      typeof decoded === 'object' && decoded !== null && 'userId' in decoded
+        ? (decoded as { userId: string }).userId
+        : 'user_1';
+    const mockUser = getMockUser(userId);
 
     // Generate new tokens
     const { accessToken, refreshToken: newRefreshToken } = generateTokens(mockUser.id, mockUser.role);

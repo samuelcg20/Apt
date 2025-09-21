@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
     const limit = parseInt(searchParams.get('limit') || '10');
     
     // Get mock reviews given by the user
-    const allReviews = getMockReviews({ reviewerId: authResult.user.id });
+    const allReviews = getMockReviews({ reviewerId: authResult.user?.id });
     const total = allReviews.length;
     const skip = (page - 1) * limit;
     const reviews = allReviews.slice(skip, skip + limit);

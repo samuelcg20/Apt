@@ -9,9 +9,13 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: authResult.error }, { status: authResult.status });
     }
 
+    if (!authResult.user) {
+      return NextResponse.json({ error: 'User not found' }, { status: 500 });
+    }
+
     const user = getMockUser(authResult.user.id);
     const studentProfile = getMockStudentProfile(authResult.user.id);
-    
+
     const userWithProfile = {
       ...user,
       studentProfile

@@ -13,7 +13,7 @@ export async function POST(
       return NextResponse.json({ error: authResult.error }, { status: authResult.status });
     }
 
-    if (authResult.user.role !== 'STUDENT') {
+    if (authResult.user?.role !== 'STUDENT') {
       return NextResponse.json({ error: 'Access denied' }, { status: 403 });
     }
 

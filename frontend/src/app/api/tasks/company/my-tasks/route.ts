@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: authResult.error }, { status: authResult.status });
     }
 
-    if (authResult.user.role !== 'COMPANY') {
+    if (!authResult.user || authResult.user.role !== 'COMPANY') {
       return NextResponse.json({ error: 'Access denied' }, { status: 403 });
     }
 

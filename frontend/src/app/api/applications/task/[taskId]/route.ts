@@ -13,7 +13,7 @@ export async function GET(
       return NextResponse.json({ error: authResult.error }, { status: authResult.status });
     }
 
-    if (authResult.user.role !== 'COMPANY') {
+    if (authResult.user?.role !== 'COMPANY') {
       return NextResponse.json({ error: 'Access denied' }, { status: 403 });
     }
 
@@ -24,7 +24,7 @@ export async function GET(
     
     // Verify task belongs to company
     const task = getMockTask(taskId);
-    if (!task || task.companyId !== authResult.user.id) {
+    if (!task || task.companyId !== authResult.user?.id) {
       return NextResponse.json({ error: 'Task not found or unauthorized' }, { status: 404 });
     }
 

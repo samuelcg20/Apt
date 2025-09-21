@@ -20,7 +20,7 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ error: authResult.error }, { status: authResult.status });
     }
 
-    if (authResult.user.role !== 'STUDENT') {
+    if (authResult.user?.role !== 'STUDENT') {
       return NextResponse.json({ error: 'Access denied' }, { status: 403 });
     }
 
@@ -35,7 +35,7 @@ export async function PUT(request: NextRequest) {
     if (error instanceof z.ZodError) {
       return NextResponse.json({ 
         error: 'Validation error',
-        details: error.errors 
+        details: error.issues 
       }, { status: 400 });
     }
     
@@ -52,7 +52,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: authResult.error }, { status: authResult.status });
     }
 
-    if (authResult.user.role !== 'STUDENT') {
+    if (authResult.user?.role !== 'STUDENT') {
       return NextResponse.json({ error: 'Access denied' }, { status: 403 });
     }
 
