@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User, AuthResponse } from '@/types';
-import apiClient from '@/lib/api';
+import { apiClient } from '@/lib/api';
 
 interface AuthContextType {
   user: User | null;

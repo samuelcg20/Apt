@@ -101,13 +101,21 @@ export default function LoginPage() {
             </button>
           </div>
 
-          <div className="text-center">
+          <div className="text-center space-y-2">
             <p className="text-sm text-gray-300">
               Don&apos;t have an account?{' '}
               <Link href="/register" className="font-medium text-blue-400 hover:text-blue-300">
                 Sign up here
               </Link>
             </p>
+            <div>
+              <Link 
+                href="/landing" 
+                className="text-sm text-gray-400 hover:text-gray-300 underline"
+              >
+                ← Back to Landing Page
+              </Link>
+            </div>
           </div>
         </form>
       </div>

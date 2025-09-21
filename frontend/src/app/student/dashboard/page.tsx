@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import Navbar from '@/components/Navbar';
-import apiClient from '@/lib/api';
+import { apiClient } from '@/lib/api';
 import { StudentProfile, Task, Application } from '@/types';
 import { formatDate, getDomainColor, getStatusColor } from '@/lib/utils';
 import Link from 'next/link';

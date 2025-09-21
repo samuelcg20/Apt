@@ -155,13 +155,21 @@ function RegisterForm() {
             </button>
           </div>
 
-          <div className="text-center">
+          <div className="text-center space-y-2">
             <p className="text-sm text-gray-600">
               Already have an account?{' '}
               <Link href="/login" className="font-medium text-blue-600 hover:text-blue-500">
                 Sign in here
               </Link>
             </p>
+            <div>
+              <Link 
+                href="/landing" 
+                className="text-sm text-gray-500 hover:text-gray-400 underline"
+              >
+                ← Back to Landing Page
+              </Link>
+            </div>
           </div>
         </form>
       </div>

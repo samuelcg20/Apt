@@ -12,6 +12,7 @@ interface NewTask {
   domain: 'MARKETING' | 'CODING' | 'UIUX' | 'FINANCE';
   duration: string;
   deliverables: string;
+  dueDate: string;
 }
 
 export default function CreateTaskPage() {
@@ -26,6 +27,7 @@ export default function CreateTaskPage() {
     domain: 'MARKETING',
     duration: '',
     deliverables: '',
+    dueDate: '',
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -45,6 +47,7 @@ export default function CreateTaskPage() {
         domain: 'MARKETING',
         duration: '',
         deliverables: '',
+        dueDate: '',
       });
 
       // Redirect to tasks page after 2 seconds
@@ -141,8 +144,8 @@ export default function CreateTaskPage() {
               />
             </div>
 
-            {/* Domain and Duration */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Domain, Duration, and Due Date */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div>
                 <label htmlFor="domain" className="block text-sm font-medium text-gray-700 mb-2">
                   Domain *
@@ -172,6 +175,20 @@ export default function CreateTaskPage() {
                   required
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   placeholder="e.g., 2 weeks, 1 month, 3 days"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="dueDate" className="block text-sm font-medium text-gray-700 mb-2">
+                  Due Date *
+                </label>
+                <input
+                  type="date"
+                  id="dueDate"
+                  value={newTask.dueDate}
+                  onChange={(e) => setNewTask({ ...newTask, dueDate: e.target.value })}
+                  required
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
             </div>

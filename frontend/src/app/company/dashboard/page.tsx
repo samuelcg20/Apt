@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import Navbar from '@/components/Navbar';
-import apiClient from '@/lib/api';
+import { apiClient } from '@/lib/api';
 import { Task, Application } from '@/types';
 import { formatDate, getDomainColor, getStatusColor } from '@/lib/utils';
 import Link from 'next/link';
@@ -35,13 +35,25 @@ export default function CompanyDashboard() {
 
   const fetchDashboardData = async () => {
     try {
-      const [tasksRes, applicationsRes] = await Promise.all([
-        apiClient.get('/tasks/company/my-tasks'),
-        apiClient.get('/applications/my-applications?limit=10')
-      ]);
+      // Try to fetch tasks first
+      let tasks = [];
+      let applications = [];
+      
+      try {
+        const tasksRes = await apiClient.get('/tasks/company/my-tasks');
+        tasks = tasksRes.data?.tasks || tasksRes.data || [];
+      } catch {
+        console.log('Tasks endpoint not available, using empty array');
+        tasks = [];
+      }
 
-      const tasks = tasksRes.data.tasks;
-      const applications = applicationsRes.data.applications;
+      try {
+        const applicationsRes = await apiClient.get('/applications/my-applications?limit=10');
+        applications = applicationsRes.data?.applications || applicationsRes.data || [];
+      } catch {
+        console.log('Applications endpoint not available, using empty array');
+        applications = [];
+      }
 
       setMyTasks(tasks.slice(0, 5)); // Show only recent 5 tasks
       setRecentApplications(applications.slice(0, 5)); // Show only recent 5 applications
@@ -60,6 +72,15 @@ export default function CompanyDashboard() {
       });
     } catch (error) {
       console.error('Failed to fetch dashboard data:', error);
+      // Set empty data on error
+      setMyTasks([]);
+      setRecentApplications([]);
+      setStats({
+        totalTasks: 0,
+        openTasks: 0,
+        totalApplications: 0,
+        pendingApplications: 0
+      });
     } finally {
       setLoading(false);
     }
@@ -89,6 +110,34 @@ export default function CompanyDashboard() {
           <p className="text-gray-600 mt-2">
             Manage your tasks and review applications from talented students.
           </p>
+          
+          {/* Quick Navigation */}
+          <div className="mt-6 flex flex-wrap gap-4">
+            <Link
+              href="/company/tasks"
+              className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              View All Tasks
+            </Link>
+            <Link
+              href="/company/tasks/create"
+              className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors"
+            >
+              Create New Task
+            </Link>
+            <Link
+              href="/company/applications"
+              className="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition-colors"
+            >
+              View Applications
+            </Link>
+            <Link
+              href="/company/profile"
+              className="bg-gray-600 text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition-colors"
+            >
+              Company Profile
+            </Link>
+          </div>
         </div>
 
         {/* Stats Cards */}

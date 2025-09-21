@@ -42,6 +42,7 @@ export default function CompanyTasksPage() {
     domain: 'MARKETING',
     duration: '',
     deliverables: '',
+    dueDate: '',
   });
 
   useEffect(() => {
@@ -51,9 +52,10 @@ export default function CompanyTasksPage() {
   const fetchTasks = async () => {
     try {
       const response = await apiClient.get('/tasks/company/my-tasks');
-      setTasks(response.data);
+      setTasks(response.data?.tasks || response.data || []);
     } catch (error) {
       console.error('Error fetching tasks:', error);
+      setTasks([]); // Set empty array on error
     } finally {
       setLoading(false);
     }
@@ -69,6 +71,7 @@ export default function CompanyTasksPage() {
         domain: 'MARKETING',
         duration: '',
         deliverables: '',
+        dueDate: '',
       });
       setShowCreateForm(false);
       fetchTasks(); // Refresh tasks
@@ -174,7 +177,7 @@ export default function CompanyTasksPage() {
                   />
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Domain
@@ -200,6 +203,19 @@ export default function CompanyTasksPage() {
                       value={newTask.duration}
                       onChange={(e) => setNewTask({ ...newTask, duration: e.target.value })}
                       placeholder="e.g., 2 weeks, 1 month"
+                      required
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Due Date
+                    </label>
+                    <input
+                      type="date"
+                      value={newTask.dueDate}
+                      onChange={(e) => setNewTask({ ...newTask, dueDate: e.target.value })}
                       required
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     />
