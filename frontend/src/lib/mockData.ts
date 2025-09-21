@@ -243,55 +243,73 @@ const mockReviews = [
 ];
 
 // Helper functions to get mock data
-const getMockUser = (userId) => {
+const getMockUser = (userId: string) => {
   return mockUsers.find(user => user.id === userId) || mockUsers[0];
 };
 
-const getMockStudentProfile = (userId) => {
+const getMockStudentProfile = (userId: string) => {
   return mockStudentProfiles.find(profile => profile.userId === userId);
 };
 
 const getMockTasks = (filters = {}) => {
+  type TaskFilters = {
+    domain?: string;
+    status?: string;
+  };
+
   let filteredTasks = [...mockTasks];
-  
-  if (filters.domain) {
-    filteredTasks = filteredTasks.filter(task => task.domain === filters.domain);
+  const { domain, status } = filters as TaskFilters;
+
+  if (domain) {
+    filteredTasks = filteredTasks.filter(task => task.domain === domain);
   }
-  
-  if (filters.status) {
-    filteredTasks = filteredTasks.filter(task => task.status === filters.status);
+
+  if (status) {
+    filteredTasks = filteredTasks.filter(task => task.status === status);
   }
   
   return filteredTasks;
 };
 
-const getMockTask = (taskId) => {
+const getMockTask = (taskId: string) => {
   return mockTasks.find(task => task.id === taskId);
 };
 
 const getMockApplications = (filters = {}) => {
+  type ApplicationFilters = {
+    studentId?: string;
+    taskId?: string;
+  };
+
   let filteredApplications = [...mockApplications];
-  
-  if (filters.studentId) {
-    filteredApplications = filteredApplications.filter(app => app.studentId === filters.studentId);
+  const { studentId, taskId } = filters as ApplicationFilters;
+
+  if (studentId) {
+    filteredApplications = filteredApplications.filter(app => app.studentId === studentId);
   }
-  
-  if (filters.taskId) {
-    filteredApplications = filteredApplications.filter(app => app.taskId === filters.taskId);
+
+  if (taskId) {
+    filteredApplications = filteredApplications.filter(app => app.taskId === taskId);
   }
   
   return filteredApplications;
 };
 
 const getMockReviews = (filters = {}) => {
+  type ReviewFilters = {
+    revieweeId?: string;
+    reviewerId?: string;
+  };
+
   let filteredReviews = [...mockReviews];
-  
-  if (filters.revieweeId) {
-    filteredReviews = filteredReviews.filter(review => review.revieweeId === filters.revieweeId);
+  const { revieweeId, reviewerId } = filters as ReviewFilters;
+
+  if (revieweeId) {
+    filteredReviews = filteredReviews.filter(review => review.revieweeId === revieweeId);
   }
-  
-  if (filters.reviewerId) {
-    filteredReviews = filteredReviews.filter(review => review.reviewerId === filters.reviewerId);
+
+  if (reviewerId) {
+    filteredReviews = filteredReviews.filter(review => review.reviewerId === reviewerId);
   }
   
   return filteredReviews;

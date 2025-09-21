@@ -17,7 +17,11 @@ export const authenticateToken = async (request: Request) => {
 
   try {
     // For demo purposes, always return a mock user
-    const user = getMockUser(decoded.userId || 'user_1');
+    let userId: string = 'user_1';
+    if (typeof decoded === 'object' && decoded !== null && 'userId' in decoded && typeof (decoded as any).userId === 'string') {
+      userId = (decoded as any).userId;
+    }
+    const user = getMockUser(userId);
     return { success: true, user };
   } catch (error) {
     console.error('Authentication error:', error);
