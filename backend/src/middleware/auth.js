@@ -17,7 +17,12 @@ const authenticateToken = async (req, res, next) => {
 
   try {
     // For demo purposes, always return a mock user
-    const user = getMockUser(decoded.userId || 'user_1');
+    let userId = 'user_1'; // default mock user ID
+    if (typeof decoded !== 'string' && decoded.userId) {
+      userId = decoded.userId;
+    }
+
+    const user = getMockUser(userId);
     req.user = user;
     next();
   } catch (error) {
