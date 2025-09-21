@@ -77,13 +77,13 @@ export default function LandingPage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center lg:justify-start">
               <Link 
-                href="/company/dashboard" 
+                href="#get-started" 
                 className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:from-cyan-600 hover:to-blue-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-cyan-500/25"
               >
                 Post a Task
               </Link>
               <Link 
-                href="/student/dashboard" 
+                href="#get-started" 
                 className="bg-transparent border-2 border-cyan-400 text-cyan-400 px-8 py-4 rounded-full text-lg font-semibold hover:bg-cyan-400 hover:text-slate-900 transition-all duration-300 transform hover:scale-105"
               >
                 Find Opportunities
