@@ -281,12 +281,6 @@ export default function CompanyDashboard() {
                       <span>{task.duration}</span>
                       <span>{task.applications.length} applications</span>
                     </div>
-                    <Link
-                      href={`/company/tasks/${task.id}`}
-                      className="block mt-3 text-blue-600 hover:text-blue-800 text-sm font-medium"
-                    >
-                      Manage Task →
-                    </Link>
                   </div>
                 ))}
               </div>

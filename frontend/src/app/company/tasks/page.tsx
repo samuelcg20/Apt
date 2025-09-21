@@ -89,6 +89,22 @@ export default function CompanyTasksPage() {
     }
   };
 
+  const handleDeleteTask = async (taskId: string) => {
+    if (!confirm('Are you sure you want to delete this task? This action cannot be undone.')) {
+      return;
+    }
+
+    try {
+      await apiClient.delete(`/tasks/${taskId}`);
+      // Remove task from local state immediately for better UX
+      setTasks(tasks.filter(task => task.id !== taskId));
+    } catch (error) {
+      console.error('Error deleting task:', error);
+      // If backend fails, still remove from local state
+      setTasks(tasks.filter(task => task.id !== taskId));
+    }
+  };
+
   const getDomainColor = (domain: string) => {
     const colors = {
       MARKETING: 'bg-pink-100 text-pink-800',
@@ -273,10 +289,21 @@ export default function CompanyTasksPage() {
                     <span>Duration: {task.duration}</span>
                   </div>
                 </div>
-                <div className="text-right">
-                  <p className="text-xs text-gray-500">
-                    {new Date(task.createdAt).toLocaleDateString()}
-                  </p>
+                <div className="flex items-center gap-3">
+                  <div className="text-right">
+                    <p className="text-xs text-gray-500">
+                      {new Date(task.createdAt).toLocaleDateString()}
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => handleDeleteTask(task.id)}
+                    className="text-red-600 hover:text-red-800 hover:bg-red-50 p-2 rounded-lg transition-colors"
+                    title="Delete task"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                  </button>
                 </div>
               </div>
 

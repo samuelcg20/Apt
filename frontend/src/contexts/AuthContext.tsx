@@ -7,8 +7,8 @@ import { apiClient } from '@/lib/api';
 interface AuthContextType {
   user: User | null;
   isLoading: boolean;
-  login: (email: string, password: string) => Promise<void>;
-  register: (email: string, password: string, role: 'STUDENT' | 'COMPANY') => Promise<void>;
+  login: (email: string, password: string) => Promise<User>;
+  register: (email: string, password: string, role: 'STUDENT' | 'COMPANY') => Promise<User>;
   logout: () => void;
   refreshUser: () => Promise<void>;
 }
@@ -46,7 +46,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     initAuth();
   }, []);
 
-  const login = async (email: string, password: string) => {
+  const login = async (email: string, password: string): Promise<User> => {
     try {
       const response = await apiClient.post<AuthResponse>('/auth/login', {
         email,
@@ -58,6 +58,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       localStorage.setItem('accessToken', accessToken);
       localStorage.setItem('refreshToken', refreshToken);
       setUser(user);
+      return user;
     } catch (error: unknown) {
       throw new Error(
         error && typeof error === 'object' && 'response' in error && 
@@ -72,7 +73,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const register = async (email: string, password: string, role: 'STUDENT' | 'COMPANY') => {
+  const register = async (email: string, password: string, role: 'STUDENT' | 'COMPANY'): Promise<User> => {
     try {
       const response = await apiClient.post<AuthResponse>('/auth/register', {
         email,
@@ -85,6 +86,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       localStorage.setItem('accessToken', accessToken);
       localStorage.setItem('refreshToken', refreshToken);
       setUser(user);
+      return user;
     } catch (error: unknown) {
       throw new Error(
         error && typeof error === 'object' && 'response' in error && 

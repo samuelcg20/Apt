@@ -1,263 +1,338 @@
 'use client';
 
-import Link from 'next/link';
 import { useEffect } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
 
 export default function LandingPage() {
   useEffect(() => {
-    // Add any client-side effects here
+    // Add smooth scrolling behavior
+    const handleScroll = () => {
+      const navbar = document.getElementById('navbar');
+      if (navbar) {
+        if (window.scrollY > 50) {
+          navbar.classList.add('scrolled');
+        } else {
+          navbar.classList.remove('scrolled');
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white overflow-x-hidden">
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200/50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
-            <div className="flex items-center">
-              <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">A</span>
-                </div>
-                <h1 className="text-xl font-semibold text-gray-900">APT</h1>
-              </div>
-            </div>
-            <div className="flex items-center space-x-8">
-              <Link 
-                href="/login" 
-                className="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium transition-colors"
-              >
-                Sign In
-              </Link>
-              <Link 
-                href="/register" 
-                className="bg-gray-900 text-white px-6 py-2 rounded-full text-sm font-medium hover:bg-gray-800 transition-colors"
-              >
-                Get Started
-              </Link>
-            </div>
+      <nav id="navbar" className="fixed top-0 left-0 right-0 bg-slate-900/90 backdrop-blur-xl z-50 transition-all duration-300 border-b border-white/10">
+        <div className="max-w-7xl mx-auto px-5 flex justify-between items-center h-20">
+          <div className="nav-logo">
+            <h2 className="text-3xl font-extrabold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent tracking-tight">
+              APT
+            </h2>
           </div>
+          <ul className="hidden md:flex list-none gap-12">
+            <li>
+              <a href="#home" className="text-white font-medium text-base transition-all duration-300 hover:text-cyan-400 hover:-translate-y-0.5 relative py-2">
+                Home
+              </a>
+            </li>
+            <li>
+              <a href="#problem-solution" className="text-white font-medium text-base transition-all duration-300 hover:text-cyan-400 hover:-translate-y-0.5 relative py-2">
+                Problem & Solution
+              </a>
+            </li>
+            <li>
+              <a href="#how-it-works" className="text-white font-medium text-base transition-all duration-300 hover:text-cyan-400 hover:-translate-y-0.5 relative py-2">
+                How It Works
+              </a>
+            </li>
+            <li>
+              <a href="#founders" className="text-white font-medium text-base transition-all duration-300 hover:text-cyan-400 hover:-translate-y-0.5 relative py-2">
+                Meet the Founders
+              </a>
+            </li>
+            <li>
+              <a href="#get-started" className="text-white font-medium text-base transition-all duration-300 hover:text-cyan-400 hover:-translate-y-0.5 relative py-2">
+                Get Started
+              </a>
+            </li>
+          </ul>
         </div>
       </nav>
 
       {/* Hero Section */}
-      <section className="pt-20 pb-32 bg-gradient-to-b from-white to-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-8 leading-tight">
-              Where Students Gain<br />
-              <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                Real Experience
+      <section id="home" className="min-h-screen flex items-center justify-center pt-20">
+        <div className="max-w-7xl mx-auto px-5 flex flex-col lg:flex-row items-center gap-16">
+          <div className="flex-1 text-center lg:text-left">
+            <h1 className="text-5xl lg:text-7xl font-bold mb-8 leading-tight">
+              Where Students Gain Experience &<br />
+              <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+                Startups Get Work Done.
               </span>
             </h1>
-            <p className="text-xl md:text-2xl text-gray-600 mb-12 max-w-4xl mx-auto leading-relaxed">
-              APT connects Singaporean students with startups and SMEs for meaningful, 
-              project-based collaboration. Build your portfolio while helping companies grow.
+            <p className="text-xl lg:text-2xl text-gray-300 mb-12 max-w-2xl mx-auto lg:mx-0">
+              APT connects Singaporean students with startups and SMEs for real-world, project-based collaboration.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <div className="flex flex-col sm:flex-row gap-6 justify-center lg:justify-start">
               <Link 
-                href="/register?role=student" 
-                className="bg-gray-900 text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-800 transition-all duration-300 transform hover:scale-105"
+                href="/company/dashboard" 
+                className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:from-cyan-600 hover:to-blue-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-cyan-500/25"
               >
-                Join as Student
+                Post a Task
               </Link>
               <Link 
-                href="/register?role=company" 
-                className="bg-blue-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-blue-700 transition-all duration-300 transform hover:scale-105"
+                href="/student/dashboard" 
+                className="bg-transparent border-2 border-cyan-400 text-cyan-400 px-8 py-4 rounded-full text-lg font-semibold hover:bg-cyan-400 hover:text-slate-900 transition-all duration-300 transform hover:scale-105"
               >
-                Join as Company
+                Find Opportunities
               </Link>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section className="py-32 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-20">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">How It Works</h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Simple steps to meaningful collaboration
-            </p>
-          </div>
-          
-          <div className="grid md:grid-cols-3 gap-16">
-            <div className="text-center group">
-              <div className="w-20 h-20 bg-gradient-to-br from-blue-100 to-blue-200 rounded-3xl flex items-center justify-center mx-auto mb-8 group-hover:scale-110 transition-transform duration-300">
-                <span className="text-3xl">👤</span>
+          <div className="flex-1 flex justify-center">
+            <div className="relative w-96 h-96">
+              <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/20 to-blue-500/20 rounded-full blur-3xl"></div>
+              <div className="relative bg-slate-800/50 backdrop-blur-sm rounded-2xl p-8 border border-white/10">
+                <div className="flex flex-col items-center space-y-6">
+                  <div className="bg-gradient-to-r from-cyan-500 to-blue-600 p-4 rounded-xl">
+                    <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 0v12h8V4H6z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                  <span className="text-white font-medium">Startups</span>
+                  <div className="w-full h-px bg-gradient-to-r from-transparent via-cyan-400 to-transparent"></div>
+                  <div className="bg-gradient-to-r from-purple-500 to-pink-600 p-4 rounded-xl">
+                    <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z" />
+                    </svg>
+                  </div>
+                  <span className="text-white font-medium">Students</span>
+                </div>
               </div>
-              <h3 className="text-2xl font-semibold text-gray-900 mb-4">Create Profile</h3>
-              <p className="text-gray-600 leading-relaxed">
-                Students showcase their skills and portfolios. Companies set up detailed business profiles to attract the right talent.
-              </p>
-            </div>
-            
-            <div className="text-center group">
-              <div className="w-20 h-20 bg-gradient-to-br from-green-100 to-green-200 rounded-3xl flex items-center justify-center mx-auto mb-8 group-hover:scale-110 transition-transform duration-300">
-                <span className="text-3xl">🔍</span>
-              </div>
-              <h3 className="text-2xl font-semibold text-gray-900 mb-4">Find Opportunities</h3>
-              <p className="text-gray-600 leading-relaxed">
-                Students discover relevant projects. Companies post tasks and review applications from qualified candidates.
-              </p>
-            </div>
-            
-            <div className="text-center group">
-              <div className="w-20 h-20 bg-gradient-to-br from-purple-100 to-purple-200 rounded-3xl flex items-center justify-center mx-auto mb-8 group-hover:scale-110 transition-transform duration-300">
-                <span className="text-3xl">🤝</span>
-              </div>
-              <h3 className="text-2xl font-semibold text-gray-900 mb-4">Collaborate</h3>
-              <p className="text-gray-600 leading-relaxed">
-                Work together on real projects, build lasting relationships, and grow your professional network.
-              </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Our Team Section */}
-      <section className="py-32 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-20">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Our Team</h2>
-            <p className="text-xl text-gray-600">Meet the people behind APT</p>
+      {/* Problem & Solution Section */}
+      <section id="problem-solution" className="py-32 bg-slate-800/30">
+        <div className="max-w-7xl mx-auto px-5">
+          <h2 className="text-4xl lg:text-5xl font-bold text-center mb-16">
+            Real Problems. <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Real Solutions.</span>
+          </h2>
+          <div className="grid lg:grid-cols-2 gap-16 mb-16">
+            <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl p-8 border border-red-500/20">
+              <h3 className="text-2xl font-bold text-red-400 mb-6">The Problem</h3>
+              <div className="space-y-4 text-gray-300">
+                <p>Startups and SMEs often struggle with operational and digital challenges but lack the manpower and resources to solve them.</p>
+                <p>Students, despite years of study, graduate with limited real-world work experience and weaker portfolios — making it harder to stand out in the job market.</p>
+                <p>This creates a dual challenge: businesses stall in growth, and students struggle to break into meaningful roles.</p>
+              </div>
+            </div>
+            <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl p-8 border border-green-500/20">
+              <h3 className="text-2xl font-bold text-green-400 mb-6">The Solution</h3>
+              <div className="space-y-4 text-gray-300">
+                <p>APT bridges this gap by empowering startups with affordable, flexible, and motivated student talent.</p>
+                <p>Students gain real-world exposure by tackling actual business challenges, building skills, and earning income.</p>
+                <p>Together, we create a cycle of growth: startups scale faster, and students step confidently into the workforce.</p>
+              </div>
+            </div>
           </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
-            {/* Team Member 1 */}
-            <div className="text-center group">
-              <div className="w-24 h-24 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                <span className="text-2xl font-bold text-white">JD</span>
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">John Doe</h3>
-              <p className="text-sm text-gray-600">CEO & Founder</p>
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl p-8 border border-cyan-500/20">
+              <h4 className="text-xl font-bold text-cyan-400 mb-4">Our Vision</h4>
+              <p className="text-gray-300">A Singapore where no startup is held back by lack of talent, and no student graduates without practical industry experience.</p>
             </div>
-            
-            {/* Team Member 2 */}
-            <div className="text-center group">
-              <div className="w-24 h-24 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                <span className="text-2xl font-bold text-white">AS</span>
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Alice Smith</h3>
-              <p className="text-sm text-gray-600">CTO</p>
-            </div>
-            
-            {/* Team Member 3 */}
-            <div className="text-center group">
-              <div className="w-24 h-24 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                <span className="text-2xl font-bold text-white">MJ</span>
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Mike Johnson</h3>
-              <p className="text-sm text-gray-600">Head of Operations</p>
-            </div>
-            
-            {/* Team Member 4 */}
-            <div className="text-center group">
-              <div className="w-24 h-24 bg-gradient-to-br from-pink-500 to-pink-600 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                <span className="text-2xl font-bold text-white">SB</span>
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Sarah Brown</h3>
-              <p className="text-sm text-gray-600">Head of Marketing</p>
-            </div>
-            
-            {/* Team Member 5 */}
-            <div className="text-center group">
-              <div className="w-24 h-24 bg-gradient-to-br from-orange-500 to-orange-600 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                <span className="text-2xl font-bold text-white">DW</span>
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">David Wilson</h3>
-              <p className="text-sm text-gray-600">Lead Developer</p>
+            <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl p-8 border border-purple-500/20">
+              <h4 className="text-xl font-bold text-purple-400 mb-4">Our Mission</h4>
+              <p className="text-gray-300">Build the bridge between academia and the startup world — enabling collaborative problem-solving that benefits both businesses and emerging talent.</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-32 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-gray-900 mb-2">500+</div>
-              <div className="text-gray-600">Students</div>
+      {/* How It Works Section */}
+      <section id="how-it-works" className="py-32">
+        <div className="max-w-7xl mx-auto px-5">
+          <h2 className="text-4xl lg:text-5xl font-bold text-center mb-16">
+            Three Simple Steps to <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Collaboration.</span>
+          </h2>
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
+            <div className="flex-1 text-center">
+              <div className="bg-gradient-to-r from-cyan-500 to-blue-600 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg className="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 0v12h8V4H6z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <h3 className="text-2xl font-bold mb-4">Companies Post an Issue</h3>
+              <p className="text-gray-300">Briefs with scope, budget, and timeline.</p>
             </div>
-            <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-gray-900 mb-2">100+</div>
-              <div className="text-gray-600">Companies</div>
+            <div className="hidden lg:block">
+              <svg className="w-8 h-8 text-cyan-400" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
+              </svg>
             </div>
-            <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-gray-900 mb-2">1000+</div>
-              <div className="text-gray-600">Projects</div>
+            <div className="flex-1 text-center">
+              <div className="bg-gradient-to-r from-purple-500 to-pink-600 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg className="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z" />
+                </svg>
+              </div>
+              <h3 className="text-2xl font-bold mb-4">Students Apply with Proposals</h3>
+              <p className="text-gray-300">Students showcase ideas, portfolios, or mini-solutions.</p>
             </div>
-            <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-gray-900 mb-2">95%</div>
-              <div className="text-gray-600">Success Rate</div>
+            <div className="hidden lg:block">
+              <svg className="w-8 h-8 text-cyan-400" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
+              </svg>
+            </div>
+            <div className="flex-1 text-center">
+              <div className="bg-gradient-to-r from-green-500 to-emerald-600 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg className="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <h3 className="text-2xl font-bold mb-4">Work Delivered via Milestones</h3>
+              <p className="text-gray-300">Payments tied to deliverables, ensuring trust and accountability.</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-32 bg-gradient-to-br from-gray-900 to-gray-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">Ready to Get Started?</h2>
-          <p className="text-xl text-gray-300 mb-12 max-w-3xl mx-auto">
-            Join hundreds of students and companies already using APT to build meaningful connections and grow together.
+      {/* Meet the Founders Section */}
+      <section id="founders" className="py-32 bg-slate-800/30">
+        <div className="max-w-7xl mx-auto px-5">
+          <h2 className="text-4xl lg:text-5xl font-bold text-center mb-6">Meet the Founders</h2>
+          <p className="text-xl text-gray-300 text-center mb-16 max-w-3xl mx-auto">
+            The team behind APT — passionate about bridging opportunities between startups and students.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
+            <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl p-6 border border-white/10 text-center hover:border-cyan-500/50 transition-all duration-300">
+              <div className="w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden">
+                <Image
+                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face"
+                  alt="Alex Chen"
+                  width={96}
+                  height={96}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <h3 className="text-xl font-bold mb-2">Alex Chen</h3>
+              <p className="text-cyan-400 font-medium mb-2">Product</p>
+              <p className="text-gray-400 text-sm italic">&quot;Building bridges between dreams and reality&quot;</p>
+            </div>
+            <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl p-6 border border-white/10 text-center hover:border-purple-500/50 transition-all duration-300">
+              <div className="w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden">
+                <Image
+                  src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=300&h=300&fit=crop&crop=face"
+                  alt="Sarah Lim"
+                  width={96}
+                  height={96}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <h3 className="text-xl font-bold mb-2">Sarah Lim</h3>
+              <p className="text-purple-400 font-medium mb-2">Tech</p>
+              <p className="text-gray-400 text-sm italic">&quot;Code that connects, technology that transforms&quot;</p>
+            </div>
+            <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl p-6 border border-white/10 text-center hover:border-green-500/50 transition-all duration-300">
+              <div className="w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden">
+                <Image
+                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop&crop=face"
+                  alt="Marcus Tan"
+                  width={96}
+                  height={96}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <h3 className="text-xl font-bold mb-2">Marcus Tan</h3>
+              <p className="text-green-400 font-medium mb-2">Growth</p>
+              <p className="text-gray-400 text-sm italic">&quot;Growing communities, one connection at a time&quot;</p>
+            </div>
+            <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl p-6 border border-white/10 text-center hover:border-pink-500/50 transition-all duration-300">
+              <div className="w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden">
+                <Image
+                  src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop&crop=face"
+                  alt="Emma Wong"
+                  width={96}
+                  height={96}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <h3 className="text-xl font-bold mb-2">Emma Wong</h3>
+              <p className="text-pink-400 font-medium mb-2">Design</p>
+              <p className="text-gray-400 text-sm italic">&quot;Designing experiences that inspire action&quot;</p>
+            </div>
+            <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl p-6 border border-white/10 text-center hover:border-orange-500/50 transition-all duration-300">
+              <div className="w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden">
+                <Image
+                  src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&h=300&fit=crop&crop=face"
+                  alt="David Kumar"
+                  width={96}
+                  height={96}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <h3 className="text-xl font-bold mb-2">David Kumar</h3>
+              <p className="text-orange-400 font-medium mb-2">Operations</p>
+              <p className="text-gray-400 text-sm italic">&quot;Making complex systems simple and scalable&quot;</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Call to Action Section */}
+      <section id="get-started" className="py-32 bg-gradient-to-r from-cyan-600 to-blue-700">
+        <div className="max-w-7xl mx-auto px-5 text-center">
+          <h2 className="text-4xl lg:text-5xl font-bold mb-6">Ready to bridge the gap?</h2>
+          <p className="text-xl text-cyan-100 mb-12 max-w-3xl mx-auto">
+            Join APT today and be part of Singapore&apos;s future of work.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-6 justify-center">
             <Link 
               href="/register?role=student" 
-              className="bg-white text-gray-900 px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transition-all duration-300 transform hover:scale-105"
+              className="bg-white text-cyan-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-lg"
             >
-              Start as Student
+              Sign up as a Student
             </Link>
             <Link 
               href="/register?role=company" 
-              className="bg-blue-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-blue-700 transition-all duration-300 transform hover:scale-105"
+              className="bg-transparent border-2 border-white text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-white hover:text-cyan-600 transition-all duration-300 transform hover:scale-105"
             >
-              Start as Company
+              Sign up as a Startup
             </Link>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div className="md:col-span-2">
-              <div className="flex items-center space-x-2 mb-4">
-                <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">A</span>
-                </div>
-                <h3 className="text-2xl font-bold">APT</h3>
-              </div>
-              <p className="text-gray-400 mb-6 max-w-md">
-                Connecting students with startups for real-world experience and meaningful collaboration.
-              </p>
+      <footer className="bg-slate-900 py-16">
+        <div className="max-w-7xl mx-auto px-5">
+          <div className="flex flex-col md:flex-row justify-between items-center">
+            <div className="flex space-x-8 mb-8 md:mb-0">
+              <Link href="#problem-solution" className="text-gray-400 hover:text-white transition-colors">About</Link>
+              <Link href="#get-started" className="text-gray-400 hover:text-white transition-colors">Contact</Link>
+              <Link href="#founders" className="text-gray-400 hover:text-white transition-colors">Privacy Policy</Link>
             </div>
-            
-            <div>
-              <h4 className="text-lg font-semibold mb-4">For Students</h4>
-              <ul className="space-y-2 text-gray-400">
-                <li><Link href="/register?role=student" className="hover:text-white transition-colors">Join as Student</Link></li>
-                <li><Link href="/student/tasks" className="hover:text-white transition-colors">Browse Tasks</Link></li>
-                <li><Link href="/student/applications" className="hover:text-white transition-colors">My Applications</Link></li>
-              </ul>
+            <div className="flex space-x-6 mb-8 md:mb-0">
+              <a href="#" className="text-gray-400 hover:text-cyan-400 transition-colors">
+                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                </svg>
+              </a>
+              <a href="#" className="text-gray-400 hover:text-cyan-400 transition-colors">
+                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.402.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.357-.629-2.746-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24.009 12.017 24c6.624 0 11.99-5.367 11.99-11.987C24.007 5.367 18.641.001 12.017.001z"/>
+                </svg>
+              </a>
+              <a href="#" className="text-gray-400 hover:text-cyan-400 transition-colors">
+                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                </svg>
+              </a>
             </div>
-            
-            <div>
-              <h4 className="text-lg font-semibold mb-4">For Companies</h4>
-              <ul className="space-y-2 text-gray-400">
-                <li><Link href="/register?role=company" className="hover:text-white transition-colors">Join as Company</Link></li>
-                <li><Link href="/company/tasks/create" className="hover:text-white transition-colors">Create Task</Link></li>
-                <li><Link href="/company/applications" className="hover:text-white transition-colors">Review Applications</Link></li>
-              </ul>
-            </div>
-          </div>
-          
-          <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
-            <p>&copy; 2024 APT. All rights reserved.</p>
+            <p className="text-gray-400">Built with ❤️ in Singapore.</p>
           </div>
         </div>
       </footer>

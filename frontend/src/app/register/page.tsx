@@ -35,8 +35,13 @@ function RegisterForm() {
     }
 
     try {
-      await register(email, password, role);
-      router.push('/');
+      const registeredUser = await register(email, password, role);
+      // Redirect based on role after successful registration
+      if (registeredUser.role === 'STUDENT') {
+        router.push('/student/dashboard');
+      } else {
+        router.push('/company/dashboard');
+      }
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {

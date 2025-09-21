@@ -19,8 +19,15 @@ export default function LoginPage() {
     setIsLoading(true);
 
     try {
-      await login(email, password);
-      router.push('/');
+      const loggedInUser = await login(email, password);
+      // Redirect based on user role after successful login
+      if (loggedInUser.role === 'STUDENT') {
+        router.push('/student/dashboard');
+      } else if (loggedInUser.role === 'COMPANY') {
+        router.push('/company/dashboard');
+      } else {
+        router.push('/landing');
+      }
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {

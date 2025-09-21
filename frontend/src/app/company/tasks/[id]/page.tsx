@@ -62,6 +62,21 @@ export default function TaskDetailPage({ params }: TaskDetailPageProps) {
     }
   };
 
+  const handleDeleteTask = async () => {
+    if (!confirm('Are you sure you want to delete this task? This action cannot be undone.')) {
+      return;
+    }
+
+    try {
+      await apiClient.delete(`/tasks/${params.id}`);
+      router.push('/company/tasks');
+    } catch (error) {
+      console.error('Error deleting task:', error);
+      // Still redirect even if backend fails
+      router.push('/company/tasks');
+    }
+  };
+
   if (authLoading || loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -129,6 +144,12 @@ export default function TaskDetailPage({ params }: TaskDetailPageProps) {
                 }`}
               >
                 {task.status === 'OPEN' ? 'Close Task' : 'Reopen Task'}
+              </button>
+              <button
+                onClick={handleDeleteTask}
+                className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors text-sm font-medium"
+              >
+                Delete Task
               </button>
             </div>
           </div>
