@@ -1,10 +1,9 @@
 const express = require('express');
 const { z } = require('zod');
-const { PrismaClient } = require('@prisma/client');
 const { authenticateToken, requireCompany } = require('../middleware/auth');
+const { getMockTasks, getMockTask } = require('../mockData');
 
 const router = express.Router();
-const prisma = new PrismaClient();
 
 // Validation schemas
 const taskSchema = z.object({
@@ -20,42 +19,9 @@ router.post('/', authenticateToken, requireCompany, async (req, res) => {
   try {
     const { title, description, domain, duration, deliverables } = taskSchema.parse(req.body);
 
-    const task = await prisma.task.create({
-      data: {
-        title,
-        description,
-        domain,
-        duration,
-        deliverables,
-        companyId: req.user.id
-      },
-      include: {
-        company: {
-          select: {
-            id: true,
-            email: true
-          }
-        },
-        applications: {
-          include: {
-            student: {
-              include: {
-                user: {
-                  select: {
-                    id: true,
-                    email: true
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    });
-
-    res.status(201).json({
-      message: 'Task created successfully',
-      task
+    // Return error for new submissions as per requirements
+    res.status(503).json({ 
+      error: "Sorry, we are currently experiencing high traffic." 
     });
   } catch (error) {
     if (error instanceof z.ZodError) {
@@ -75,43 +41,14 @@ router.get('/', async (req, res) => {
   try {
     const { domain, status, page = 1, limit = 10 } = req.query;
     
-    const where = {};
-    if (domain) where.domain = domain;
-    if (status) where.status = status;
+    const filters = {};
+    if (domain) filters.domain = domain;
+    if (status) filters.status = status;
 
+    const allTasks = getMockTasks(filters);
+    const total = allTasks.length;
     const skip = (parseInt(page) - 1) * parseInt(limit);
-
-    const [tasks, total] = await Promise.all([
-      prisma.task.findMany({
-        where,
-        skip,
-        take: parseInt(limit),
-        orderBy: { createdAt: 'desc' },
-        include: {
-          company: {
-            select: {
-              id: true,
-              email: true
-            }
-          },
-          applications: {
-            include: {
-              student: {
-                include: {
-                  user: {
-                    select: {
-                      id: true,
-                      email: true
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }),
-      prisma.task.count({ where })
-    ]);
+    const tasks = allTasks.slice(skip, skip + parseInt(limit));
 
     res.json({
       tasks,
@@ -133,32 +70,7 @@ router.get('/:id', async (req, res) => {
   try {
     const { id } = req.params;
 
-    const task = await prisma.task.findUnique({
-      where: { id },
-      include: {
-        company: {
-          select: {
-            id: true,
-            email: true
-          }
-        },
-        applications: {
-          include: {
-            student: {
-              include: {
-                user: {
-                  select: {
-                    id: true,
-                    email: true
-                  }
-                },
-                projects: true
-              }
-            }
-          }
-        }
-      }
-    });
+    const task = getMockTask(id);
 
     if (!task) {
       return res.status(404).json({ error: 'Task not found' });
@@ -177,27 +89,10 @@ router.put('/:id', authenticateToken, requireCompany, async (req, res) => {
     const { id } = req.params;
     const { title, description, domain, duration, deliverables, status } = req.body;
 
-    const updateData = {};
-    if (title) updateData.title = title;
-    if (description) updateData.description = description;
-    if (domain) updateData.domain = domain;
-    if (duration) updateData.duration = duration;
-    if (deliverables) updateData.deliverables = deliverables;
-    if (status) updateData.status = status;
-
-    const task = await prisma.task.updateMany({
-      where: {
-        id,
-        companyId: req.user.id
-      },
-      data: updateData
+    // Return error for new submissions as per requirements
+    res.status(503).json({ 
+      error: "Sorry, we are currently experiencing high traffic." 
     });
-
-    if (task.count === 0) {
-      return res.status(404).json({ error: 'Task not found or unauthorized' });
-    }
-
-    res.json({ message: 'Task updated successfully' });
   } catch (error) {
     console.error('Update task error:', error);
     res.status(500).json({ error: 'Failed to update task' });
@@ -209,18 +104,10 @@ router.delete('/:id', authenticateToken, requireCompany, async (req, res) => {
   try {
     const { id } = req.params;
 
-    const task = await prisma.task.deleteMany({
-      where: {
-        id,
-        companyId: req.user.id
-      }
+    // Return error for new submissions as per requirements
+    res.status(503).json({ 
+      error: "Sorry, we are currently experiencing high traffic." 
     });
-
-    if (task.count === 0) {
-      return res.status(404).json({ error: 'Task not found or unauthorized' });
-    }
-
-    res.json({ message: 'Task deleted successfully' });
   } catch (error) {
     console.error('Delete task error:', error);
     res.status(500).json({ error: 'Failed to delete task' });
@@ -231,34 +118,12 @@ router.delete('/:id', authenticateToken, requireCompany, async (req, res) => {
 router.get('/company/my-tasks', authenticateToken, requireCompany, async (req, res) => {
   try {
     const { page = 1, limit = 10 } = req.query;
+    
+    // Filter tasks by company ID (using mock data)
+    const companyTasks = getMockTasks().filter(task => task.companyId === req.user.id);
+    const total = companyTasks.length;
     const skip = (parseInt(page) - 1) * parseInt(limit);
-
-    const [tasks, total] = await Promise.all([
-      prisma.task.findMany({
-        where: { companyId: req.user.id },
-        skip,
-        take: parseInt(limit),
-        orderBy: { createdAt: 'desc' },
-        include: {
-          applications: {
-            include: {
-              student: {
-                include: {
-                  user: {
-                    select: {
-                      id: true,
-                      email: true
-                    }
-                  },
-                  projects: true
-                }
-              }
-            }
-          }
-        }
-      }),
-      prisma.task.count({ where: { companyId: req.user.id } })
-    ]);
+    const tasks = companyTasks.slice(skip, skip + parseInt(limit));
 
     res.json({
       tasks,

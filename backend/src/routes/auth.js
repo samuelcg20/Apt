@@ -1,12 +1,10 @@
 const express = require('express');
-const bcrypt = require('bcryptjs');
 const { z } = require('zod');
-const { PrismaClient } = require('@prisma/client');
 const { generateTokens, verifyRefreshToken } = require('../utils/jwt');
 const { authenticateToken } = require('../middleware/auth');
+const { getMockUser, getMockStudentProfile } = require('../mockData');
 
 const router = express.Router();
-const prisma = new PrismaClient();
 
 // Validation schemas
 const registerSchema = z.object({
@@ -25,39 +23,20 @@ router.post('/register', async (req, res) => {
   try {
     const { email, password, role } = registerSchema.parse(req.body);
 
-    // Check if user already exists
-    const existingUser = await prisma.user.findUnique({
-      where: { email }
-    });
-
-    if (existingUser) {
-      return res.status(400).json({ error: 'User already exists' });
-    }
-
-    // Hash password
-    const passwordHash = await bcrypt.hash(password, 12);
-
-    // Create user
-    const user = await prisma.user.create({
-      data: {
-        email,
-        passwordHash,
-        role
-      },
-      select: {
-        id: true,
-        email: true,
-        role: true,
-        createdAt: true
-      }
-    });
+    // For demo purposes, always return success with mock user
+    const mockUser = {
+      id: `user_${Date.now()}`,
+      email,
+      role,
+      createdAt: new Date().toISOString()
+    };
 
     // Generate tokens
-    const { accessToken, refreshToken } = generateTokens(user.id, user.role);
+    const { accessToken, refreshToken } = generateTokens(mockUser.id, mockUser.role);
 
     res.status(201).json({
       message: 'User created successfully',
-      user,
+      user: mockUser,
       accessToken,
       refreshToken
     });
@@ -79,37 +58,15 @@ router.post('/login', async (req, res) => {
   try {
     const { email, password } = loginSchema.parse(req.body);
 
-    // Find user
-    const user = await prisma.user.findUnique({
-      where: { email },
-      select: {
-        id: true,
-        email: true,
-        role: true,
-        passwordHash: true,
-        createdAt: true
-      }
-    });
-
-    if (!user) {
-      return res.status(401).json({ error: 'Invalid credentials' });
-    }
-
-    // Verify password
-    const isValidPassword = await bcrypt.compare(password, user.passwordHash);
-    if (!isValidPassword) {
-      return res.status(401).json({ error: 'Invalid credentials' });
-    }
+    // For demo purposes, always return successful login with mock user
+    const mockUser = getMockUser('user_1'); // Default to first mock user
 
     // Generate tokens
-    const { accessToken, refreshToken } = generateTokens(user.id, user.role);
-
-    // Remove password hash from response
-    const { passwordHash, ...userWithoutPassword } = user;
+    const { accessToken, refreshToken } = generateTokens(mockUser.id, mockUser.role);
 
     res.json({
       message: 'Login successful',
-      user: userWithoutPassword,
+      user: mockUser,
       accessToken,
       refreshToken
     });
@@ -140,18 +97,11 @@ router.post('/refresh', async (req, res) => {
       return res.status(403).json({ error: 'Invalid refresh token' });
     }
 
-    // Find user
-    const user = await prisma.user.findUnique({
-      where: { id: decoded.userId },
-      select: { id: true, role: true }
-    });
-
-    if (!user) {
-      return res.status(403).json({ error: 'User not found' });
-    }
+    // For demo purposes, always return mock user
+    const mockUser = getMockUser(decoded.userId || 'user_1');
 
     // Generate new tokens
-    const { accessToken, refreshToken: newRefreshToken } = generateTokens(user.id, user.role);
+    const { accessToken, refreshToken: newRefreshToken } = generateTokens(mockUser.id, mockUser.role);
 
     res.json({
       accessToken,
@@ -166,22 +116,15 @@ router.post('/refresh', async (req, res) => {
 // Get current user
 router.get('/me', authenticateToken, async (req, res) => {
   try {
-    const user = await prisma.user.findUnique({
-      where: { id: req.user.id },
-      select: {
-        id: true,
-        email: true,
-        role: true,
-        createdAt: true,
-        studentProfile: {
-          include: {
-            projects: true
-          }
-        }
-      }
-    });
+    const user = getMockUser(req.user.id);
+    const studentProfile = getMockStudentProfile(req.user.id);
+    
+    const userWithProfile = {
+      ...user,
+      studentProfile
+    };
 
-    res.json({ user });
+    res.json({ user: userWithProfile });
   } catch (error) {
     console.error('Get user error:', error);
     res.status(500).json({ error: 'Failed to get user' });

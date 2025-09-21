@@ -1,8 +1,6 @@
 const jwt = require('jsonwebtoken');
-const { PrismaClient } = require('@prisma/client');
-
-const prisma = new PrismaClient();
 const { verifyAccessToken } = require('../utils/jwt');
+const { getMockUser } = require('../mockData');
 
 const authenticateToken = async (req, res, next) => {
   const authHeader = req.headers['authorization'];
@@ -18,15 +16,8 @@ const authenticateToken = async (req, res, next) => {
   }
 
   try {
-    const user = await prisma.user.findUnique({
-      where: { id: decoded.userId },
-      select: { id: true, role: true, email: true }
-    });
-
-    if (!user) {
-      return res.status(403).json({ error: 'User not found' });
-    }
-
+    // For demo purposes, always return a mock user
+    const user = getMockUser(decoded.userId || 'user_1');
     req.user = user;
     next();
   } catch (error) {

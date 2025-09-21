@@ -1,7 +1,4 @@
 const jwt = require('jsonwebtoken');
-const { PrismaClient } = require('@prisma/client');
-
-const prisma = new PrismaClient();
 
 const generateTokens = (userId, role) => {
   const accessToken = jwt.sign(
@@ -12,7 +9,7 @@ const generateTokens = (userId, role) => {
   
   const refreshToken = jwt.sign(
     { userId },
-    process.env.JWT_REFRESH_SECRET,
+    process.env.JWT_SECRET, // Using same secret for demo
     { expiresIn: '7d' }
   );
   
@@ -29,7 +26,7 @@ const verifyAccessToken = (token) => {
 
 const verifyRefreshToken = (token) => {
   try {
-    return jwt.verify(token, process.env.JWT_REFRESH_SECRET);
+    return jwt.verify(token, process.env.JWT_SECRET); // Using same secret for demo
   } catch (error) {
     return null;
   }

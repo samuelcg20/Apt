@@ -16,7 +16,9 @@ const PORT = process.env.PORT || 3001;
 // Middleware
 app.use(helmet());
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production' ? 'https://yourdomain.com' : ['http://localhost:3000', 'http://localhost:3002', 'http://localhost:3003'],
+  origin: process.env.NODE_ENV === 'production' 
+    ? ['https://apt-seven.vercel.app', process.env.FRONTEND_URL] 
+    : ['http://localhost:3000', 'http://localhost:3002', 'http://localhost:3003'],
   credentials: true
 }));
 app.use(morgan('combined'));
