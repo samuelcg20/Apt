@@ -126,7 +126,7 @@ export default function LandingPage() {
               <h3 className="text-2xl font-bold text-red-400 mb-6">The Problem</h3>
               <div className="space-y-4 text-gray-300">
                 <p>Startups and SMEs often struggle with operational and digital challenges but lack the manpower and resources to solve them.</p>
-                <p>Students, despite years of study, graduate with limited real-world work experience and weaker portfolios — making it harder to stand out in the job market.</p>
+                <p>Students, despite years of study, graduate with limited real-world work experience and weaker portfolios - making it harder to stand out in the job market.</p>
                 <p>This creates a dual challenge: businesses stall in growth, and students struggle to break into meaningful roles.</p>
               </div>
             </div>
@@ -146,7 +146,7 @@ export default function LandingPage() {
             </div>
             <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl p-8 border border-purple-500/20">
               <h4 className="text-xl font-bold text-purple-400 mb-4">Our Mission</h4>
-              <p className="text-gray-300">Build the bridge between academia and the startup world — enabling collaborative problem-solving that benefits both businesses and emerging talent.</p>
+              <p className="text-gray-300">Build the bridge between academia and the startup world - enabling collaborative problem-solving that benefits both businesses and emerging talent.</p>
             </div>
           </div>
         </div>
@@ -205,7 +205,7 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-5">
           <h2 className="text-4xl lg:text-5xl font-bold text-center mb-6">Meet the Founders</h2>
           <p className="text-xl text-gray-300 text-center mb-16 max-w-3xl mx-auto">
-            The team behind APT — passionate about bridging opportunities between startups and students.
+            The team behind APT - passionate about bridging opportunities between startups and students.
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
